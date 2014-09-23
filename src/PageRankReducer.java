@@ -4,7 +4,6 @@ import org.apache.hadoop.mapreduce.Reducer;
 
 public class PageRankReducer 
 	extends Reducer<Text, Text, Text, Text>{
-	@SuppressWarnings("null")
 	@Override
 	/**
 	 *  reduce method accepts the Key Value pairs from mappers, 
@@ -16,7 +15,7 @@ public class PageRankReducer
 		
 		String outlinks = "";
 		String inputValue = "";
-		Float PR = null;
+		float PR = 0;
 		String specialChar = ",";
 		
         /** 

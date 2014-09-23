@@ -16,6 +16,7 @@ public class PageRankMapper
 	public void map(LongWritable key, Text value, Context context) 
 			throws IOException, InterruptedException{
 		
+		// value is space separated values: A C F PR
 		String line = value.toString();
         String[] token_arr = line.split(" ");
         int tokenSize = token_arr.length - 1;
