@@ -24,14 +24,14 @@ public class PageRankReducer
          **/
 		for (Text value : values) {
 			inputValue = value.toString();
-			
-			// If input value contains ",", split it and calculate new PR. 
 			if (inputValue.contains(specialChar)) {
 				PR += Float.parseFloat(inputValue.split(specialChar)[1]);
 			} else {
 				outlinks = inputValue;
 			}
 		}
+		
 		context.write(key, new Text(outlinks + PR));
 	}
+	
 }

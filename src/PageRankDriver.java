@@ -12,35 +12,29 @@ public class PageRankDriver {
 		throws IOException, ClassNotFoundException, InterruptedException {
 		
 		// Check for valid number of arguments.
-		if (args.length != 3) {
+		if (args.length != 2) {
 			System.err.println("*** Error: Missing Parameters *** \n " +
-							   "Usage: hadoop PageRankDriver <indir> <outdir> <iterations>");
+							   "Usage: hadoop PageRankDriver <input_path> <output_path>");
 			System.exit(-1);
 		}
 		
-		Path inPath = new Path(args[0]);
-		Path outPath =  null;
-		int iterations = new Integer(args[2]);
+		/**
+		 * Create a new job object and set the output types of the Map and Reduce function.
+		 * Also set Mapper and Reducer classes.
+		 */
+		Job job = new Job();
+		job.setJobName("Page Rank");
+		job.setJarByClass(PageRankDriver.class);
+		job.setOutputKeyClass(Text.class);
+		job.setOutputValueClass(Text.class);
+		job.setMapperClass(PageRankMapper.class);
+		job.setReducerClass(PageRankReducer.class);
 		
-		for (int i = 0; i<iterations; ++i){
-		    outPath = new Path(args[1]+i);
-		    
-			/**
-			 * Create a new job object and set the output types of the Map and Reduce function.
-			 * Also set Mapper and Reducer classes.
-			 */
-			Job job = new Job();
-			job.setJobName("Page Rank");
-			job.setJarByClass(PageRankDriver.class);
-			job.setOutputKeyClass(Text.class);
-			job.setOutputValueClass(Text.class);
-			job.setMapperClass(PageRankMapper.class);
-			job.setReducerClass(PageRankReducer.class);
-			FileInputFormat.addInputPath(job, inPath);
-			FileOutputFormat.setOutputPath(job, outPath);
-			job.waitForCompletion(true);
-			inPath = outPath;
-		}
+		// the HDFS input and output directory to be fetched from the command line
+		FileInputFormat.addInputPath(job, new Path(args[0]));
+		FileOutputFormat.setOutputPath(job, new Path(args[1]));
+		
+		System.exit(job.waitForCompletion(true) ? 0 : 1);
 	}
 }
 
