@@ -18,20 +18,18 @@ public class PageRankMapper
 		
 		// value is space separated values: A C F PR
 		String line = value.toString();
-        String[] token_arr = line.split(" ");
+        String[] token_arr = line.split("\t");
         int tokenSize = token_arr.length - 1;
         
 		StringBuffer outLinks = new StringBuffer();
-		String strSpace = " ";
+		String strTab = "\t";
 		Float PR;
 		
         for (int index = 1; index < tokenSize; index++){
         	PR = (Float.parseFloat(token_arr[tokenSize]) / (tokenSize - 1));
 			context.write(new Text(token_arr[index]), new Text(token_arr[0] + "," + PR.toString()));
-			outLinks.append(token_arr[index] + strSpace); 
+			outLinks.append(token_arr[index] + strTab); 
         }
         context.write(new Text(token_arr[0]), new Text(outLinks.toString()));
-        
 	}
-
 }
